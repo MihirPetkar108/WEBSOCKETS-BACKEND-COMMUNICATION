@@ -1,10 +1,10 @@
 import WebSocket, { WebSocketServer } from "ws";
 
-const port = 8080;
+const port = 8081;
 
 const relayPort = 3000;
 // For js relay server
-const relaySocket = new WebSocket(`ws://localhost:${relayPort}/rs`);
+const relaySocket = new WebSocket(`ws://localhost:${relayPort}/`);
 
 // For python relay server
 // const relaySocket = new WebSocket(`ws://127.0.0.1:3000/rs`);
