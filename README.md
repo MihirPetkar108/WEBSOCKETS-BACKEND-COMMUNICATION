@@ -288,7 +288,7 @@ To receive messages in a room, you must subscribe/join first.
    {
      "type": "chat",
      "roomId": "gamers-lounge",
-     "name": "Alice",
+     "name": "Mihir",
      "content": "Hey team, ready to play?"
    }
    ```
@@ -310,7 +310,7 @@ To receive messages in a room, you must subscribe/join first.
    ```json
    [
      {
-       "name": "Alice",
+       "name": "Mihir",
        "message": "Hey team, ready to play?"
      }
    ]
