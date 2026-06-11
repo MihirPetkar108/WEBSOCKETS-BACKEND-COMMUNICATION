@@ -12,8 +12,8 @@ relay_socket = None
 async def lifespan(app: FastAPI):
     global relay_socket
 
-    relay_socket = await websockets.connect("ws://localhost:3000")
-    # relay_socket = await websockets.connect("ws://127.0.0.1:3000/rs")
+    # relay_socket = await websockets.connect("ws://localhost:3000")
+    relay_socket = await websockets.connect("ws://127.0.0.1:3000/rs")
     relay_listener_task = asyncio.create_task(listen_to_relay())
     print("Connected to relay server at ws://127.0.0.1:3000/rs")
 
@@ -75,9 +75,26 @@ async def listen_to_relay():
                 print("Ignoring unexpected payload:", parsedData)
                 continue
 
-            roomId = parsedData["roomId"]
-            name = parsedData["name"]
-            content = parsedData["content"]
+            message_type = parsedData.get("type")
+
+            if message_type == "connected":
+                print(
+                    f"Connected acknowledgement from relay: "
+                    f"{parsedData.get('host')}:{parsedData.get('port')}"
+                )
+                continue
+
+            if message_type != "chat":
+                print("Ignoring relay message:", parsedData)
+                continue
+
+            roomId = parsedData.get("roomId")
+            name = parsedData.get("name")
+            content = parsedData.get("content")
+
+            if not isinstance(roomId, str) or not isinstance(name, str) or not isinstance(content, str):
+                print("Invalid relay payload:", parsedData)
+                continue
 
             if roomId not in Rooms:
                 print(f"Room {roomId} not found on this backend server")
